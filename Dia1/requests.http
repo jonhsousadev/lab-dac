@@ -42,6 +42,7 @@ GET {{baseurl}}/destaques
 
 ### 09 - Cadastrar banda → 201
 # Rode esta ANTES das 10, 11 e 12: o id criado aqui é reutilizado abaixo.
+# @name criarBanda
 POST {{baseurl}}/bandas
 Content-Type: application/json
 
@@ -54,8 +55,9 @@ Content-Type: application/json
 }
 
 ### 10 - Trocar a banda inteira (PUT) → 200
-# {% client.response.body.id %} pega o id devolvido pela requisição 09
-PUT {{baseurl}}/bandas/{% client.response.body.id %}
+# {{criarBanda.response.body.$.id}} pega o id devolvido pela requisição 09.
+# Só resolve depois de a 09 já ter sido executada nesta sessão do arquivo.
+PUT {{baseurl}}/bandas/{{criarBanda.response.body.$.id}}
 Content-Type: application/json
 
 {
@@ -67,7 +69,7 @@ Content-Type: application/json
 }
 
 ### 11 - Atualizar só um pedaço (PATCH) → 200
-PATCH {{baseurl}}/bandas/{% client.response.body.id %}
+PATCH {{baseurl}}/bandas/{{criarBanda.response.body.$.id}}
 Content-Type: application/json
 
 {
@@ -75,7 +77,7 @@ Content-Type: application/json
 }
 
 ### 12 - Apagar a banda (DELETE) → 204 (sem corpo)
-DELETE {{baseurl}}/bandas/{% client.response.body.id %}
+DELETE {{baseurl}}/bandas/{{criarBanda.response.body.$.id}}
 
 ### 13 - Erro 404 (banda 999 não existe) → 404
 GET {{baseurl}}/bandas/999
